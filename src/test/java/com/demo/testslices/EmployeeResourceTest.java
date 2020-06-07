@@ -15,6 +15,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -42,11 +43,12 @@ public class EmployeeResourceTest {
 
     @Test
     public void shouldReturnOkayAndPayloadWhenRequestingEmployeeResource() throws Exception {
-        Mockito.doReturn(employees).when(employeeService).getAllEmployees();
+        doReturn(employees).when(employeeService).getAllEmployees();
         mockMvc.perform(MockMvcRequestBuilders.get("/employees"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$[0].id").value(1))
                 .andExpect(jsonPath("$[0]firstName").value("a first name"))
                 .andExpect(jsonPath("$[0]lastName").value("a last name"));
+        verify(employeeService).getAllEmployees();
     }
 }
